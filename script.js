@@ -1,6 +1,9 @@
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
 
+let y = canvas.height / 2 - 20
 
 function drawCircle(x, y) {
   ctx.beginPath()
@@ -19,17 +22,18 @@ window.addEventListener("resize", resizeCanvas)
 resizeCanvas()
 
 function animate() {
+  y += 10
+  if(y >= canvas.height - 20) {
+    y = canvas.height - 20
+  }
+  ctx.clearRect(0,0,canvas.width, canvas.height)
+  drawCircle(100, y)
+  drawCircle(canvas.width - 100, y)
   requestAnimationFrame(animate)
 }
 
-// animate()
+animate()
 
-
-// create full canvas
-// add two ball
-// make ball attack
-// like an arc
+// ball can shoot
 // add health bars
 // turn based combat
-// repeat
-// add 
