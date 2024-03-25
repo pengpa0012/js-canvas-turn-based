@@ -6,6 +6,15 @@ canvas.height = window.innerHeight
 let y = canvas.height / 2 - 20
 let arrowAngle = 0
 
+const data = [
+  {
+    x: 100,
+  }, 
+  {
+    x: canvas.width - 100,
+  }
+]
+
 function drawCircle(x, y) {
   ctx.beginPath()
   ctx.arc(x, y, 20, 0, 2 * Math.PI)
@@ -14,6 +23,7 @@ function drawCircle(x, y) {
 }
 
 function drawArrow(x, y, angle) {
+  // change val to negative if on right side
   ctx.save()
   ctx.translate(x - 20, y)
   ctx.rotate(angle)
@@ -43,8 +53,19 @@ function updateArrowPosition(event) {
   arrowAngle = Math.atan2(dy, dx)
 }
 
+function shootBullet() {
+  ctx.beginPath()
+  ctx.arc(100, 100, 20, 0, 2 * Math.PI)
+  ctx.fill()
+  ctx.stroke()
+}
+
 window.addEventListener("resize", resizeCanvas)
 window.addEventListener("mousemove", updateArrowPosition)
+window.addEventListener("click", () => {
+  console.log("fire", arrowAngle)
+  shootBullet()
+})
 resizeCanvas()
 
 function animate() {
@@ -53,10 +74,12 @@ function animate() {
     y = canvas.height - 20
   }
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  drawCircle(100, y)
-  drawCircle(canvas.width - 100, y)
+  data.forEach(el => {
+    drawCircle(el.x, y)
+  })
   drawArrow(100 + 20, y, arrowAngle) // Drawing arrow relative to the circle
   requestAnimationFrame(animate)
 }
 
 animate()
+
